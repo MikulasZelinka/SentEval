@@ -17,6 +17,8 @@ import copy
 import logging
 import numpy as np
 
+from tqdm import tqdm
+
 from senteval.tools.validation import SplitClassifier
 
 
@@ -40,8 +42,9 @@ class PROBINGEval(object):
 
     def loadFile(self, fpath):
         self.tok2split = {'tr': 'train', 'va': 'dev', 'te': 'test'}
+        logging.info(f'Loading file: {fpath}')
         with io.open(fpath, 'r', encoding='utf-8') as f:
-            for line in f:
+            for line in tqdm(f):
                 line = line.rstrip().split('\t')
                 self.task_data[self.tok2split[line[0]]]['X'].append(line[-1].split())
                 self.task_data[self.tok2split[line[0]]]['y'].append(line[1])
@@ -58,7 +61,7 @@ class PROBINGEval(object):
         task_embed = {'train': {}, 'dev': {}, 'test': {}}
         bsize = params.batch_size
         logging.info('Computing embeddings for train/dev/test')
-        for key in self.task_data:
+        for key in tqdm(self.task_data):
             # Sort to reduce padding
             sorted_data = sorted(zip(self.task_data[key]['X'],
                                      self.task_data[key]['y']),
@@ -66,7 +69,7 @@ class PROBINGEval(object):
             self.task_data[key]['X'], self.task_data[key]['y'] = map(list, zip(*sorted_data))
 
             task_embed[key]['X'] = []
-            for ii in range(0, len(self.task_data[key]['y']), bsize):
+            for ii in tqdm(range(0, len(self.task_data[key]['y']), bsize)):
                 batch = self.task_data[key]['X'][ii:ii + bsize]
                 embeddings = batcher(params, batch)
                 task_embed[key]['X'].append(embeddings)
