@@ -94,12 +94,12 @@ class PROBINGEval(object):
                                  'test': task_embed['test']['y']},
                               config=config_classifier)
 
-        devacc, testacc = clf.run()
+        (devacc, testacc), model = clf.run()
         logging.debug('\nDev acc : %.1f Test acc : %.1f for %s classification\n' % (devacc, testacc, self.task.upper()))
 
         return {'devacc': devacc, 'acc': testacc,
                 'ndev': len(task_embed['dev']['X']),
-                'ntest': len(task_embed['test']['X'])}, clf
+                'ntest': len(task_embed['test']['X'])}, model
 
 """
 Surface Information

@@ -227,7 +227,6 @@ class SplitClassifier(object):
         devaccuracy = np.max(scores)
         logging.info('Validation : best param found is reg = {0} with score \
             {1}'.format(optreg, devaccuracy))
-        clf = LogisticRegression(C=optreg, random_state=self.seed)
         logging.info('Evaluating...')
         if self.usepytorch:
             clf = MLP(self.classifier_config, inputdim=self.featdim,
@@ -243,4 +242,4 @@ class SplitClassifier(object):
 
         testaccuracy = clf.score(self.X['test'], self.y['test'])
         testaccuracy = round(100*testaccuracy, 2)
-        return devaccuracy, testaccuracy
+        return (devaccuracy, testaccuracy), clf
