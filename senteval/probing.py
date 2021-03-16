@@ -99,7 +99,7 @@ class PROBINGEval(object):
 
         return {'devacc': devacc, 'acc': testacc,
                 'ndev': len(task_embed['dev']['X']),
-                'ntest': len(task_embed['test']['X'])}
+                'ntest': len(task_embed['test']['X'])}, clf
 
 """
 Surface Information
