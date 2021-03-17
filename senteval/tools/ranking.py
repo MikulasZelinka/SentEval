@@ -218,10 +218,10 @@ class ImageSentenceRankingPytorch(object):
             results['t2i']['r10'] += r10_t2i / 5
             results['t2i']['medr'] += medr_t2i / 5
 
-        return bestdevscore, results['i2t']['r1'], results['i2t']['r5'], \
+        return (bestdevscore, results['i2t']['r1'], results['i2t']['r5'], \
                              results['i2t']['r10'], results['i2t']['medr'], \
                              results['t2i']['r1'], results['t2i']['r5'], \
-                             results['t2i']['r10'], results['t2i']['medr']
+                             results['t2i']['r10'], results['t2i']['medr']), self
 
     def trainepoch(self, trainTxt, trainImg, devTxt, devImg, nepoches=1):
         self.model.train()

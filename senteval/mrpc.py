@@ -96,9 +96,9 @@ class MRPCEval(object):
         clf = KFoldClassifier(train={'X': trainF, 'y': trainY},
                               test={'X': testF, 'y': testY}, config=config)
 
-        devacc, testacc, yhat = clf.run()
+        (devacc, testacc, yhat), model = clf.run()
         testf1 = round(100*f1_score(testY, yhat), 2)
         logging.debug('Dev acc : {0} Test acc {1}; Test F1 {2} for MRPC.\n'
                       .format(devacc, testacc, testf1))
         return {'devacc': devacc, 'acc': testacc, 'f1': testf1,
-                'ndev': len(trainA), 'ntest': len(testA)}
+                'ndev': len(trainA), 'ntest': len(testA)}, model

@@ -93,8 +93,8 @@ class ImageCaptionRetrievalEval(object):
                                           test=coco_embed['test'],
                                           config=config)
 
-        bestdevscore, r1_i2t, r5_i2t, r10_i2t, medr_i2t, \
-            r1_t2i, r5_t2i, r10_t2i, medr_t2i = clf.run()
+        (bestdevscore, r1_i2t, r5_i2t, r10_i2t, medr_i2t,
+            r1_t2i, r5_t2i, r10_t2i, medr_t2i), model = clf.run()
 
         logging.debug("\nTest scores | Image to text: \
             {0}, {1}, {2}, {3}".format(r1_i2t, r5_i2t, r10_i2t, medr_i2t))
@@ -105,4 +105,4 @@ class ImageCaptionRetrievalEval(object):
                 'acc': [(r1_i2t, r5_i2t, r10_i2t, medr_i2t),
                         (r1_t2i, r5_t2i, r10_t2i, medr_t2i)],
                 'ndev': len(coco_embed['dev']['sentfeat']),
-                'ntest': len(coco_embed['test']['sentfeat'])}
+                'ntest': len(coco_embed['test']['sentfeat'])}, model

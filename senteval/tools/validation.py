@@ -104,7 +104,7 @@ class InnerKFoldClassifier(object):
 
         devaccuracy = round(np.mean(self.devresults), 2)
         testaccuracy = round(np.mean(self.testresults), 2)
-        return devaccuracy, testaccuracy
+        return (devaccuracy, testaccuracy), clf
 
 
 class KFoldClassifier(object):
@@ -178,7 +178,7 @@ class KFoldClassifier(object):
         testaccuracy = clf.score(self.test['X'], self.test['y'])
         testaccuracy = round(100*testaccuracy, 2)
 
-        return devaccuracy, testaccuracy, yhat
+        return (devaccuracy, testaccuracy, yhat), clf
 
 
 class SplitClassifier(object):

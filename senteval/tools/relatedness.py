@@ -98,7 +98,7 @@ class RelatednessPytorch(object):
 
         yhat = np.dot(self.predict_proba(testX), r)
 
-        return bestpr, yhat
+        return (bestpr, yhat), self
 
     def trainepoch(self, X, y, nepoches=1):
         self.model.train()

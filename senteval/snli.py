@@ -105,9 +105,9 @@ class SNLIEval(object):
         config['classifier'] = config_classifier
 
         clf = SplitClassifier(self.X, self.y, config)
-        devacc, testacc = clf.run()
+        (devacc, testacc), model = clf.run()
         logging.debug('Dev acc : {0} Test acc : {1} for SNLI\n'
                       .format(devacc, testacc))
         return {'devacc': devacc, 'acc': testacc,
                 'ndev': len(self.data['valid'][0]),
-                'ntest': len(self.data['test'][0])}
+                'ntest': len(self.data['test'][0])}, model
