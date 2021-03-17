@@ -60,14 +60,26 @@ class PROBINGEval(object):
     def run(self, params, batcher):
         task_embed = {'train': {}, 'dev': {}, 'test': {}}
         bsize = params.batch_size
+
+        max_rows = params.get('max_rows')
+        if max_rows:
+            logging.info(f'Will only use {max_rows} rows')
+
         logging.info('Computing embeddings for train/dev/test')
         for key in tqdm(self.task_data):
+
+            if max_rows:
+                self.task_data[key]['X'] = self.task_data[key]['X'][:max_rows]
+                self.task_data[key]['y'] = self.task_data[key]['y'][:max_rows]
+
+            logging.info(f'{key} - sorting')
             # Sort to reduce padding
             sorted_data = sorted(zip(self.task_data[key]['X'],
                                      self.task_data[key]['y']),
                                  key=lambda z: (len(z[0]), z[1]))
             self.task_data[key]['X'], self.task_data[key]['y'] = map(list, zip(*sorted_data))
 
+            logging.info(f'{key} - computing embeddings')
             task_embed[key]['X'] = []
             for ii in tqdm(range(0, len(self.task_data[key]['y']), bsize)):
                 batch = self.task_data[key]['X'][ii:ii + bsize]
