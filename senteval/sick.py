@@ -214,4 +214,4 @@ class SICKEntailmentEval(SICKRelatednessEval):
         logging.debug('\nDev acc : {0} Test acc : {1} for \
                        SICK entailment\n'.format(devacc, testacc))
         return {'devacc': devacc, 'acc': testacc,
-                'ndev': len(devA), 'ntest': len(testA)}
+                'ndev': len(devA), 'ntest': len(testA)}, model
