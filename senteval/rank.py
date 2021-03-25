@@ -57,7 +57,7 @@ class ImageCaptionRetrievalEval(object):
                 for captkey in cocodata['image_to_caption_ids'][imgkey][0:5]:
                     sent = cocodata['captions'][captkey]['cleaned_caption']
                     sent += ' .'  # add punctuation to end of sentence in COCO
-                    list_sent.append(sent.encode('utf-8').split())
+                    list_sent.append(sent.split())
                     list_img_feat.append(cocodata['features'][imgkey])
             assert len(list_sent) == len(list_img_feat) and \
                 len(list_sent) % 5 == 0
