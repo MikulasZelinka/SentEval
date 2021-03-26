@@ -101,7 +101,7 @@ class STSEval(object):
         logging.debug('ALL (average) : Pearson = %.4f, \
             Spearman = %.4f\n' % (avg_pearson, avg_spearman))
 
-        return results
+        return results, {'pearson': pearsonr, 'spearman': spearmanr}
 
 
 class STS12Eval(STSEval):
