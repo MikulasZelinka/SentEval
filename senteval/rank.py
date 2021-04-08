@@ -96,9 +96,9 @@ class ImageCaptionRetrievalEval(object):
         (bestdevscore, r1_i2t, r5_i2t, r10_i2t, medr_i2t,
             r1_t2i, r5_t2i, r10_t2i, medr_t2i), model = clf.run()
 
-        logging.debug("\nTest scores | Image to text: \
+        logging.info("\nTest scores | Image to text: \
             {0}, {1}, {2}, {3}".format(r1_i2t, r5_i2t, r10_i2t, medr_i2t))
-        logging.debug("Test scores | Text to image: \
+        logging.info("Test scores | Text to image: \
             {0}, {1}, {2}, {3}\n".format(r1_t2i, r5_t2i, r10_t2i, medr_t2i))
 
         return {'devacc': bestdevscore,

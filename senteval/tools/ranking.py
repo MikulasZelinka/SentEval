@@ -141,7 +141,7 @@ class ImageSentenceRankingPytorch(object):
         stop_train = False
 
         # Preparing data
-        logging.info('prepare data')
+        logging.debug('prepare data')
         trainTxt, trainImg, devTxt, devImg, testTxt, testImg = \
             self.prepare_data(self.train['sentfeat'], self.train['imgfeat'],
                               self.valid['sentfeat'], self.valid['imgfeat'],
@@ -149,9 +149,9 @@ class ImageSentenceRankingPytorch(object):
 
         # Training
         while not stop_train and self.nepoch <= self.maxepoch:
-            logging.info('start epoch')
+            logging.debug('start epoch')
             self.trainepoch(trainTxt, trainImg, devTxt, devImg, nepoches=1)
-            logging.info('Epoch {0} finished'.format(self.nepoch))
+            logging.debug('Epoch {0} finished'.format(self.nepoch))
 
             results = {'i2t': {'r1': 0, 'r5': 0, 'r10': 0, 'medr': 0},
                        't2i': {'r1': 0, 'r5': 0, 'r10': 0, 'medr': 0},
@@ -167,7 +167,7 @@ class ImageSentenceRankingPytorch(object):
                 results['i2t']['r5'] += r5_i2t / 5
                 results['i2t']['r10'] += r10_i2t / 5
                 results['i2t']['medr'] += medr_i2t / 5
-                logging.info("Image to text: {0}, {1}, {2}, {3}"
+                logging.debug("Image to text: {0}, {1}, {2}, {3}"
                              .format(r1_i2t, r5_i2t, r10_i2t, medr_i2t))
                 # Compute dev ranks txt2img
                 r1_t2i, r5_t2i, r10_t2i, medr_t2i = self.t2i(devImg_i,
@@ -176,15 +176,15 @@ class ImageSentenceRankingPytorch(object):
                 results['t2i']['r5'] += r5_t2i / 5
                 results['t2i']['r10'] += r10_t2i / 5
                 results['t2i']['medr'] += medr_t2i / 5
-                logging.info("Text to Image: {0}, {1}, {2}, {3}"
+                logging.debug("Text to Image: {0}, {1}, {2}, {3}"
                              .format(r1_t2i, r5_t2i, r10_t2i, medr_t2i))
                 score += (r1_i2t + r5_i2t + r10_i2t +
                           r1_t2i + r5_t2i + r10_t2i) / 5
 
-            logging.info("Dev mean Text to Image: {0}, {1}, {2}, {3}".format(
+            logging.debug("Dev mean Text to Image: {0}, {1}, {2}, {3}".format(
                         results['t2i']['r1'], results['t2i']['r5'],
                         results['t2i']['r10'], results['t2i']['medr']))
-            logging.info("Dev mean Image to text: {0}, {1}, {2}, {3}".format(
+            logging.debug("Dev mean Image to text: {0}, {1}, {2}, {3}".format(
                         results['i2t']['r1'], results['i2t']['r5'],
                         results['i2t']['r10'], results['i2t']['medr']))
 
@@ -231,15 +231,15 @@ class ImageSentenceRankingPytorch(object):
             for i in range(0, len(trainTxt), self.batch_size):
                 # forward
                 if i % (self.batch_size*500) == 0 and i > 0:
-                    logging.info('samples : {0}'.format(i))
+                    logging.debug('samples : {0}'.format(i))
                     r1_i2t, r5_i2t, r10_i2t, medr_i2t = self.i2t(devImg,
                                                                  devTxt)
-                    logging.info("Image to text: {0}, {1}, {2}, {3}".format(
+                    logging.debug("Image to text: {0}, {1}, {2}, {3}".format(
                         r1_i2t, r5_i2t, r10_i2t, medr_i2t))
                     # Compute test ranks txt2img
                     r1_t2i, r5_t2i, r10_t2i, medr_t2i = self.t2i(devImg,
                                                                  devTxt)
-                    logging.info("Text to Image: {0}, {1}, {2}, {3}".format(
+                    logging.debug("Text to Image: {0}, {1}, {2}, {3}".format(
                         r1_t2i, r5_t2i, r10_t2i, medr_t2i))
                 idx = torch.LongTensor(permutation[i:i + self.batch_size])
                 imgbatch = Variable(trainImg.index_select(0, idx)).cuda()
